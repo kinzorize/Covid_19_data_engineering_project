@@ -1,4 +1,5 @@
 import boto3
+import time
 import pandas as pd
 from io import StringIO
 
@@ -7,8 +8,8 @@ AWS_ACCESS_KEY = "AKIAXEHCL3424LRLZJED"
 AWS_SECRET_KEY = "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"
 AWS_REGION = "us-east-1"
 SCHEMA_NAME = "covid_19"
-S3_STAGING_DIR = "s3://covid-19-output-elijah/output/"
-S3_BUCKET_NAME = "covid-19-output-elijah"
+S3_STAGING_DIR = "s3://elijah-covid-project/output/"
+S3_BUCKET_NAME = "elijah-covid-project"
 S3_OUTPUT_DIRECTORY = "output"
 
 # connect to athena
