@@ -71,3 +71,109 @@ response
 enigma_jhud = download_and_load_query_results(athena_client, response)
 
 enigma_jhud.head()
+
+
+response = athena_client.start_query_execution(
+    QueryString="SELECT * FROM covid_19_testing_data_states_daily",
+    QueryExecutionContext={"Database": SCHEMA_NAME},
+    ResultConfiguration={
+        "OutputLocation": S3_STAGING_DIR,
+        "EncryptionConfiguration": {"EncryptionOption": "SSE_S3"}
+    },
+)
+covid_19_testing_data_states_daily = download_and_load_query_results(
+    athena_client, response)
+
+
+response = athena_client.start_query_execution(
+    QueryString="SELECT * FROM covid_19_testing_data_us_total_latest",
+    QueryExecutionContext={"Database": SCHEMA_NAME},
+    ResultConfiguration={
+        "OutputLocation": S3_STAGING_DIR,
+        "EncryptionConfiguration": {"EncryptionOption": "SSE_S3"}
+    },
+)
+covid_19_testing_data_us_total_latest = download_and_load_query_results(
+    athena_client, response)
+
+
+response = athena_client.start_query_execution(
+    QueryString="SELECT * FROM covid_19_testing_data_us_daily",
+    QueryExecutionContext={"Database": SCHEMA_NAME},
+    ResultConfiguration={
+        "OutputLocation": S3_STAGING_DIR,
+        "EncryptionConfiguration": {"EncryptionOption": "SSE_S3"}
+    },
+)
+covid_19_testing_data_us_daily = download_and_load_query_results(
+    athena_client, response)
+
+
+response = athena_client.start_query_execution(
+    QueryString="SELECT * FROM nytimes_data_in_usa_us_county",
+    QueryExecutionContext={"Database": SCHEMA_NAME},
+    ResultConfiguration={
+        "OutputLocation": S3_STAGING_DIR,
+        "EncryptionConfiguration": {"EncryptionOption": "SSE_S3"}
+    },
+)
+nytimes_data_in_usa_us_county = download_and_load_query_results(
+    athena_client, response)
+
+
+response = athena_client.start_query_execution(
+    QueryString="SELECT * FROM nytimes_data_in_usa_us_states",
+    QueryExecutionContext={"Database": SCHEMA_NAME},
+    ResultConfiguration={
+        "OutputLocation": S3_STAGING_DIR,
+        "EncryptionConfiguration": {"EncryptionOption": "SSE_S3"}
+    },
+)
+nytimes_data_in_usa_us_states = download_and_load_query_results(
+    athena_client, response)
+
+response = athena_client.start_query_execution(
+    QueryString="SELECT * FROM static_datasets_countrycode",
+    QueryExecutionContext={"Database": SCHEMA_NAME},
+    ResultConfiguration={
+        "OutputLocation": S3_STAGING_DIR,
+        "EncryptionConfiguration": {"EncryptionOption": "SSE_S3"}
+    },
+)
+static_datasets_countrycode = download_and_load_query_results(
+    athena_client, response)
+
+
+response = athena_client.start_query_execution(
+    QueryString="SELECT * FROM static_datasets_countypopulation",
+    QueryExecutionContext={"Database": SCHEMA_NAME},
+    ResultConfiguration={
+        "OutputLocation": S3_STAGING_DIR,
+        "EncryptionConfiguration": {"EncryptionOption": "SSE_S3"}
+    },
+)
+static_datasets_countypopulation = download_and_load_query_results(
+    athena_client, response)
+
+
+response = athena_client.start_query_execution(
+    QueryString="SELECT * FROM static_datasets_state_abv",
+    QueryExecutionContext={"Database": SCHEMA_NAME},
+    ResultConfiguration={
+        "OutputLocation": S3_STAGING_DIR,
+        "EncryptionConfiguration": {"EncryptionOption": "SSE_S3"}
+    },
+)
+static_datasets_state_abv = download_and_load_query_results(
+    athena_client, response)
+
+
+response = athena_client.start_query_execution(
+    QueryString="SELECT * FROM usa_hospital_beds",
+    QueryExecutionContext={"Database": SCHEMA_NAME},
+    ResultConfiguration={
+        "OutputLocation": S3_STAGING_DIR,
+        "EncryptionConfiguration": {"EncryptionOption": "SSE_S3"}
+    },
+)
+usa_hospital_beds = download_and_load_query_results(athena_client, response)
