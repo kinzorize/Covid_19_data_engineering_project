@@ -167,6 +167,13 @@ response = athena_client.start_query_execution(
 static_datasets_state_abv = download_and_load_query_results(
     athena_client, response)
 
+# grab the first role of the ender
+new_header = static_datasets_state_abv.iloc[0]
+# takes the data below the data header row
+static_datasets_state_abv = static_datasets_state_abv[:1]
+# Set the header row as the df header.
+static_datasets_state_abv.column = new_header
+
 
 response = athena_client.start_query_execution(
     QueryString="SELECT * FROM usa_hospital_beds",
@@ -177,3 +184,63 @@ response = athena_client.start_query_execution(
     },
 )
 usa_hospital_beds = download_and_load_query_results(athena_client, response)
+
+factCovid_1 = enigma_jhud[['fips', 'province_state',
+                           'country_region', 'confirmed', 'deaths', 'recovered', 'active']]
+factCovid_2 = covid_19_testing_data_states_daily[[
+    'fips', 'date', 'positive', 'negative', 'hospitalized', 'hospitalizedcurrently', 'hospitalizeddischarged']]
+
+factCovid = pd.merge(factCovid_1, factCovid_2, on='fips', how='inner')
+
+
+factCovid.shape
+
+dimRegion_1 = enigma_jhud[['fips', 'province_state',
+                           'country_region', 'latitude', 'longitude']]
+dimRegion_2 = nytimes_data_in_usa_us_county[['fips', 'county', 'state']]
+dimRegion = pd.merge(dimRegion_1, dimRegion_2, on='fips', how='inner')
+
+
+dimHospital = usa_hospital_beds[['fips', 'state_name', 'latitude', 'longtitude',
+                                 'hq_address', 'hospital_name', 'hospital_type', 'hq_city', 'hq_state']]
+dimDate = [['fips', 'date']]
+
+dimDate.head()
+
+dimDate['date'] = pd.to_datetime(dimDate['date'], format='%Y%m%d')
+
+dimDate.head()
+
+dimDate['year'] = dimDate['date'].dt.year
+dimDate['month'] = dimDate['date'].dt.month
+dimDate['day_of_week'] = dimDate['date'].dt.dayofweek
+
+dimDate.head()
+
+bucket = 'elijah-covid-project'  # already created on s3
+
+csv_buffer = StringIO()
+
+factCovid.to_csv(csv_buffer)
+
+s3_resource = boto3.resource('s3')
+s3_resource.Object(
+    bucket, 'output/factCovid.csv').put(Body=csv_buffer.getvalue())
+
+csv_buffer = StringIO()
+dimRegion.to_csv(csv_buffer)
+s3_resource = boto3.resource('s3')
+s3_resource.Object(
+    bucket, 'output/dimRegion.csv').put(Body=csv_buffer.getvalue())
+
+csv_buffer = StringIO()
+dimHospital.to_csv(csv_buffer)
+s3_resource = boto3.resource('s3')
+s3_resource.Object(
+    bucket, 'output/dimHospital.csv').put(Body=csv_buffer.getvalue())
+
+csv_buffer = StringIO()
+dimDate.to_csv(csv_buffer)
+s3_resource = boto3.resource('s3')
+s3_resource.Object(
+    bucket, 'output/dimDate.csv').put(Body=csv_buffer.getvalue())
