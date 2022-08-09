@@ -1,11 +1,12 @@
+import redshift_connector
 import boto3
 import time
 import pandas as pd
 from io import StringIO
 
 # connect to aws and s3
-AWS_ACCESS_KEY = "AKIAXEHCL3424LRLZJED"
-AWS_SECRET_KEY = "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"
+AWS_ACCESS_KEY = "AAKIAXEHCL342RY2P73XK"
+AWS_SECRET_KEY = "8JO3WRUwcpHxyiIB9YkNiFzH87JEXRVxw1ZrgDIA"
 AWS_REGION = "us-east-1"
 SCHEMA_NAME = "covid_19"
 S3_STAGING_DIR = "s3://elijah-covid-project/output/"
@@ -245,3 +246,24 @@ dimDate.to_csv(csv_buffer)
 s3_resource = boto3.resource('s3')
 s3_resource.Object(
     bucket, 'output/dimDate.csv').put(Body=csv_buffer.getvalue())
+
+
+dimDatesql = pd.io.sql.get_schema(dimDate.reset_index(), 'dimDate')
+print(''.join(dimDatesql))
+
+factCovidsql = pd.io.sql.get_schema(factCovid.reset_index(), 'factCovid')
+print(''.join(factCovidsql))
+
+dimRegionsql = pd.io.sql.get_schema(dimRegion.reset_index(), 'dimRegion')
+print(''.join(dimRegionsql))
+
+dimHospitalsql = pd.io.sql.get_schema(dimHospital.reset_index(), 'dimHospital')
+print(''.join(dimHospitalsql))
+
+
+conn = redshift_connector.connect(
+    host='examplecluster.abc123xyz789.us-west-1.redshift.amazonaws.com',
+    database='dev',
+    user='awsuser',
+    password='my_password'
+)
