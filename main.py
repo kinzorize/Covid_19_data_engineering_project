@@ -5,8 +5,8 @@ import pandas as pd
 from io import StringIO
 
 # connect to aws and s3
-AWS_ACCESS_KEY = "AAKIAXEHCL342RY2P73XK"
-AWS_SECRET_KEY = "8JO3WRUwcpHxyiIB9YkNiFzH87JEXRVxw1ZrgDIA"
+AWS_ACCESS_KEY = "AAKIAXEHCL342RY2P73"
+AWS_SECRET_KEY = "8JO3WRUwcpHxyiIB9YkNiFzH87JEXRVxw1Zrg"
 AWS_REGION = "us-east-1"
 SCHEMA_NAME = "covid_19"
 S3_STAGING_DIR = "s3://elijah-covid-project/output/"
