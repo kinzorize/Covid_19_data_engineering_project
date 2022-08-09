@@ -5,12 +5,12 @@ import pandas as pd
 from io import StringIO
 
 # connect to aws and s3
-AWS_ACCESS_KEY = "AAKIAXEHCL342RY2P73"
-AWS_SECRET_KEY = "8JO3WRUwcpHxyiIB9YkNiFzH87JEXRVxw1Zrg"
+AWS_ACCESS_KEY = ""
+AWS_SECRET_KEY = ""
 AWS_REGION = "us-east-1"
 SCHEMA_NAME = "covid_19"
-S3_STAGING_DIR = "s3://elijah-covid-project/output/"
-S3_BUCKET_NAME = "elijah-covid-project"
+S3_STAGING_DIR = "s3://covid-19-output-elijah/output/"
+S3_BUCKET_NAME = "covid-19-output-elijah"
 S3_OUTPUT_DIRECTORY = "output"
 
 # connect to athena
@@ -229,6 +229,7 @@ s3_resource = boto3.resource('s3')
 s3_resource.Object(
     bucket, 'output/factCovid.csv').put(Body=csv_buffer.getvalue())
 
+
 csv_buffer = StringIO()
 dimRegion.to_csv(csv_buffer)
 s3_resource = boto3.resource('s3')
@@ -262,8 +263,13 @@ print(''.join(dimHospitalsql))
 
 
 conn = redshift_connector.connect(
-    host='examplecluster.abc123xyz789.us-west-1.redshift.amazonaws.com',
+    host='redshift-cluster-1.cq86xufekc54.us-east-1.redshift.amazonaws.com',
     database='dev',
     user='awsuser',
-    password='my_password'
+    password=''
 )
+
+
+conn.autocommit = True
+
+cursor = redshift_connector.Cursor = conn.cursor()
