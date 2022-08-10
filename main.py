@@ -332,3 +332,14 @@ CREATE TABLE "dimHospital" (
   "hq_state" TEXT
 )
 """)
+
+
+cursor.execute("""
+copy dimDate from 's3://elijah-covid-project/output/dimDate.csv'
+credentials 'aws_iam_role:arn:aws:iam::490101006133:role/redshift-s3-access'
+delimiter ','
+region 'us-east-1'
+IGNOREHEADER 1
+
+""")
+# arn:aws:iam::490101006133:role/redshift-s3-access
