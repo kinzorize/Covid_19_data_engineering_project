@@ -261,7 +261,6 @@ print(''.join(dimRegionsql))
 dimHospitalsql = pd.io.sql.get_schema(dimHospital.reset_index(), 'dimHospital')
 print(''.join(dimHospitalsql))
 
-
 conn = redshift_connector.connect(
     host='redshift-cluster-1.cq86xufekc54.us-east-1.redshift.amazonaws.com',
     database='dev',
@@ -343,3 +342,29 @@ IGNOREHEADER 1
 
 """)
 # arn:aws:iam::490101006133:role/redshift-s3-access
+cursor.execute("""
+copy dimDate from 's3://elijah-covid-project/output/factCovid.csv'
+credentials 'aws_iam_role:arn:aws:iam::490101006133:role/redshift-s3-access'
+delimiter ','
+region 'us-east-1'
+IGNOREHEADER 1
+
+""")
+
+cursor.execute("""
+copy dimDate from 's3://elijah-covid-project/output/dimRegion.csv'
+credentials 'aws_iam_role:arn:aws:iam::490101006133:role/redshift-s3-access'
+delimiter ','
+region 'us-east-1'
+IGNOREHEADER 1
+
+""")
+
+cursor.execute("""
+copy dimDate from 's3://elijah-covid-project/output/dimHospital.csv'
+credentials 'aws_iam_role:arn:aws:iam::490101006133:role/redshift-s3-access'
+delimiter ','
+region 'us-east-1'
+IGNOREHEADER 1
+
+""")
