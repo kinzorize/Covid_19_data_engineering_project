@@ -255,7 +255,7 @@ s3_resource = boto3.resource('s3', aws_access_key_id=AWS_ACCESS_KEY,
 s3_resource.Object(
     bucket, 'output/dimDate.csv').put(Body=csv_buffer.getvalue())
 
-
+# Extract the schema
 dimDatesql = pd.io.sql.get_schema(dimDate.reset_index(), 'dimDate')
 print(''.join(dimDatesql))
 
