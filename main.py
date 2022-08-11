@@ -221,30 +221,37 @@ dimDate.head()
 
 bucket = 'elijah-covid-project'  # already created on s3
 
+# Store the dimentional model data into s3
 csv_buffer = StringIO()
-
 factCovid.to_csv(csv_buffer)
-
-s3_resource = boto3.resource('s3')
+s3_resource = boto3.resource('s3', aws_access_key_id=AWS_ACCESS_KEY,
+                             aws_secret_access_key=AWS_SECRET_KEY,
+                             region_name=AWS_REGION, )
 s3_resource.Object(
     bucket, 'output/factCovid.csv').put(Body=csv_buffer.getvalue())
 
 
 csv_buffer = StringIO()
-dimRegion.to_csv(csv_buffer)
-s3_resource = boto3.resource('s3')
+factCovid.to_csv(csv_buffer)
+s3_resource = boto3.resource('s3', aws_access_key_id=AWS_ACCESS_KEY,
+                             aws_secret_access_key=AWS_SECRET_KEY,
+                             region_name=AWS_REGION, )
 s3_resource.Object(
     bucket, 'output/dimRegion.csv').put(Body=csv_buffer.getvalue())
 
 csv_buffer = StringIO()
-dimHospital.to_csv(csv_buffer)
-s3_resource = boto3.resource('s3')
+factCovid.to_csv(csv_buffer)
+s3_resource = boto3.resource('s3', aws_access_key_id=AWS_ACCESS_KEY,
+                             aws_secret_access_key=AWS_SECRET_KEY,
+                             region_name=AWS_REGION, )
 s3_resource.Object(
     bucket, 'output/dimHospital.csv').put(Body=csv_buffer.getvalue())
 
 csv_buffer = StringIO()
-dimDate.to_csv(csv_buffer)
-s3_resource = boto3.resource('s3')
+factCovid.to_csv(csv_buffer)
+s3_resource = boto3.resource('s3', aws_access_key_id=AWS_ACCESS_KEY,
+                             aws_secret_access_key=AWS_SECRET_KEY,
+                             region_name=AWS_REGION, )
 s3_resource.Object(
     bucket, 'output/dimDate.csv').put(Body=csv_buffer.getvalue())
 
@@ -260,6 +267,7 @@ print(''.join(dimRegionsql))
 
 dimHospitalsql = pd.io.sql.get_schema(dimHospital.reset_index(), 'dimHospital')
 print(''.join(dimHospitalsql))
+
 
 conn = redshift_connector.connect(
     host='redshift-cluster-1.cq86xufekc54.us-east-1.redshift.amazonaws.com',
