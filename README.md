@@ -1,11 +1,12 @@
 # Covid_19_data_engineering_project
 
-I built an end-to-end data engineering project with aws s3, aws glue crawler, data model, dimentional model, python, pandas, redshift and more.
+I built an end-to-end data engineering pipeline project with aws s3, aws glue crawler, data model, dimentional model, python, pandas, redshift and more.
 
 # Tools and dataset used for this project
 
 - covid 19 data lake from amazon dataset registry.
 - AWS S3 bucket
+- AWS Glue job
 - AWS Glue Crawler
 - AWS Athena
 - Jupyter notebook
