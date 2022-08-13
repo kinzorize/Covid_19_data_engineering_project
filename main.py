@@ -268,12 +268,12 @@ print(''.join(dimRegionsql))
 dimHospitalsql = pd.io.sql.get_schema(dimHospital.reset_index(), 'dimHospital')
 print(''.join(dimHospitalsql))
 
-
+# The following code goes to my aws glue job to create the tables and copy the csv into my redshift
 conn = redshift_connector.connect(
     host='redshift-cluster-1.cq86xufekc54.us-east-1.redshift.amazonaws.com',
     database='dev',
     user='awsuser',
-    password=''
+    password=''  # password removed for security reasons
 )
 
 
@@ -343,16 +343,16 @@ CREATE TABLE "dimHospital" (
 
 cursor.execute("""
 copy dimDate from 's3://elijah-covid-project/output/dimDate.csv'
-credentials 'aws_iam_role:arn:aws:iam::490101006133:role/redshift-s3-access'
+credentials 'aws_iam_role=arn:aws:iam::490101006133:role/Redshift_S3_FullAccess'
 delimiter ','
 region 'us-east-1'
 IGNOREHEADER 1
 
 """)
-# arn:aws:iam::490101006133:role/redshift-s3-access
+
 cursor.execute("""
 copy factCovid from 's3://elijah-covid-project/output/factCovid.csv'
-credentials 'aws_iam_role:arn:aws:iam::490101006133:role/redshift-s3-access'
+credentials 'aws_iam_role=arn:aws:iam::490101006133:role/Redshift_S3_FullAccess'
 delimiter ','
 region 'us-east-1'
 IGNOREHEADER 1
@@ -361,7 +361,7 @@ IGNOREHEADER 1
 
 cursor.execute("""
 copy dimRegion from 's3://elijah-covid-project/output/dimRegion.csv'
-credentials 'aws_iam_role:arn:aws:iam::490101006133:role/redshift-s3-access'
+credentials 'aws_iam_role=arn:aws:iam::490101006133:role/Redshift_S3_FullAccess'
 delimiter ','
 region 'us-east-1'
 IGNOREHEADER 1
@@ -370,7 +370,7 @@ IGNOREHEADER 1
 
 cursor.execute("""
 copy dimHospital from 's3://elijah-covid-project/output/dimHospital.csv'
-credentials 'aws_iam_role:arn:aws:iam::490101006133:role/redshift-s3-access'
+credentials 'aws_iam_role=arn:aws:iam::490101006133:role/Redshift_S3_FullAccess'
 delimiter ','
 region 'us-east-1'
 IGNOREHEADER 1
