@@ -269,6 +269,7 @@ dimHospitalsql = pd.io.sql.get_schema(dimHospital.reset_index(), 'dimHospital')
 print(''.join(dimHospitalsql))
 
 # The following code goes to my aws glue job to create the tables and copy the csv into my redshift
+
 conn = redshift_connector.connect(
     host='redshift-cluster-1.cq86xufekc54.us-east-1.redshift.amazonaws.com',
     database='dev',
